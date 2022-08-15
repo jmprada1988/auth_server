@@ -1,0 +1,46 @@
+# docker-compose.yml
+
+version: '3.8'
+services:
+  auth_server:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: development
+    env_file:
+    - .env
+    volumes:
+    - .:/usr/src/app
+    command: npm run start:dev
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:13.5
+    restart: always
+    env_file:
+    - .env
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - redis/data
+volumes:
+  postgres:
+  redis:
+    driver: local
