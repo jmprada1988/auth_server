@@ -1,11 +1,5 @@
-import {
-  CacheInterceptor,
-  CacheTTL,
-  Controller,
-  Get,
-  UseInterceptors,
-} from '@nestjs/common';
-import { AppService } from './app.service';
+import { CacheInterceptor, CacheTTL, Controller, Get, UseInterceptors } from '@nestjs/common'
+import { AppService } from './app.service'
 
 @Controller()
 export class AppController {
@@ -14,7 +8,7 @@ export class AppController {
   @UseInterceptors(CacheInterceptor) // automatically cache the response
   @CacheTTL(30) // sets the TTL to 30 seconds
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello(): object {
+    return this.appService.getHello()
   }
 }

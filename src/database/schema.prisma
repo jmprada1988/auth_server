@@ -11,10 +11,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id           Int      @id @default(autoincrement())
+model Permission {
+  id        String           @id @default(uuid())
+  action    String
+  condition Json
+  objectId  Int
+  roles     RolePermission[]
+}
+
+model Role {
+  id          String           @id @default(uuid())
+  name        String
+  permissions RolePermission[]
+  User        User[]
+}
+
+model User {
+  id           String   @id @default(uuid())
   fisrt_name   String
   middle_namne String
   last_names   String
   createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  Roles        Role?    @relation(fields: [roleId], references: [id])
+  roleId       String
+}
+
+model RolePermission {
+  Role         Role       @relation(fields: [roleId], references: [id])
+  roleId       String
+  Permission   Permission @relation(fields: [permissionId], references: [id])
+  permissionId String
+  assignedBy   String
+  assignedAt   DateTime   @default(now())
+
+  @@id([roleId, permissionId])
 }
