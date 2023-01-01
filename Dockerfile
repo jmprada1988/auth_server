@@ -2,7 +2,11 @@
 # BUILD FOR LOCAL DEVELOPMENT
 ###################
 
-FROM node:18-alpine As development
+FROM node:18-alpine3.17 As development
+
+# Required for Prisma Client to work in container
+RUN apk update \
+  && apk add openssl1.1-compat
 
 # Create app directory
 WORKDIR /usr/src/app

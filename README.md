@@ -20,6 +20,15 @@ docker-compose down
 ```
 
 And then run the command:
-
+### Build images
 ```bash
 docker-compose up -d --build -V
+```
+### for platform linux/amd64 (M1, M2)
+```bash
+docker buildx build --load -f Dockerfile --platform=linux/amd64 . -t prisma-linux-node-alpine-3.17-x64
+```
+## Apply migrations
+```bash
+npx prisma migrate dev
+```

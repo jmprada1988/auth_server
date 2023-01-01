@@ -15,7 +15,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?schema=public&?connect_timeout=300
 
     depends_on:
       - postgres
@@ -39,7 +39,7 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - redis/data
+      - redis:/var/lib/redis/data
 volumes:
   postgres:
   redis:
